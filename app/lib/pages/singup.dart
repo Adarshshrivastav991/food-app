@@ -121,7 +121,7 @@ class _SingupState extends State<Singup> {
                     child: GestureDetector(
                       onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>Login())),
                       child: Text(
-                        "Login",
+                        "Sing up",
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.w500,
