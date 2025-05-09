@@ -26,7 +26,7 @@ class _SingupState extends State<Singup> {
        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
            backgroundColor : Colors.green,
          content: Text("Register successfully",style: TextStyle(fontSize: 20.0),)));
-       Navigator.push(context,MaterialPageRoute(builder: (context)=>Bottomnav()));
+       Navigator.push(context,MaterialPageRoute(builder: (context)=>Login()));
      }on FirebaseException catch(e){
        if(e.code=='weak-password'){
          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
