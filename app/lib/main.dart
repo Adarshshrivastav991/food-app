@@ -1,3 +1,4 @@
+import 'package:app/Admain/admin_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:app/pages/bottomnav.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:Singup(),
+      home:AdminLogin(),
     );
   }
 }

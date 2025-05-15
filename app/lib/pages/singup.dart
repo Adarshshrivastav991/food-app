@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:random_string/random_string.dart';
 
 import '../services/database.dart';
+import '../services/shared_pref.dart';
 import '../widget/support_widget.dart';
 import 'bottomnav.dart';
 import 'login.dart';
@@ -29,6 +30,10 @@ class _SingupState extends State<Singup> {
            backgroundColor : Colors.green,
          content: Text("Register successfully",style: TextStyle(fontSize: 20.0),)));
        String Id = randomAlphaNumeric(10);
+       await SharedPrefernceHelper().saveUserEmail(mailcontroller.text);
+       await SharedPrefernceHelper().saveUserId(Id);
+       await SharedPrefernceHelper().saveUserName(namecontroller.text);
+       await SharedPrefernceHelper().saveUserImage("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
        Map<String,dynamic> userInfoMap = {
          "name":namecontroller.text,
          "email":mailcontroller.text,
