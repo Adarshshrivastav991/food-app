@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:random_string/random_string.dart';
 
+import '../services/database.dart';
 import '../widget/support_widget.dart';
 import 'bottomnav.dart';
 import 'login.dart';
@@ -26,6 +28,14 @@ class _SingupState extends State<Singup> {
        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
            backgroundColor : Colors.green,
          content: Text("Register successfully",style: TextStyle(fontSize: 20.0),)));
+       String Id = randomAlphaNumeric(10);
+       Map<String,dynamic> userInfoMap = {
+         "name":namecontroller.text,
+         "email":mailcontroller.text,
+        "Id": Id,
+         "image":"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+       };
+       await DatabaseMethods().addUserDetails(userInfoMap,Id);
        Navigator.push(context,MaterialPageRoute(builder: (context)=>Login()));
      }on FirebaseException catch(e){
        if(e.code=='weak-password'){

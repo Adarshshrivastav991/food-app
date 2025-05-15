@@ -166,7 +166,7 @@ class _LoginState extends State<Login> {
                 Row(
                   children: [
                     Text("Don't have an account?",style: AppWidget.lightTextFeildStyle(),),
-                    GestureDetector(onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>Singup())),
+                    GestureDetector(onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>Home())),
                         child: Text("Sing up",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w500,fontSize: 15.0),))
                   ],
                 )
