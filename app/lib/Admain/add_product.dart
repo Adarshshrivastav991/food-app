@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../widget/support_widget.dart';
 
 class AddProduct extends StatefulWidget {
@@ -28,9 +27,32 @@ class _AddProductState extends State<AddProduct> {
       ),
       body: Container(
         margin: EdgeInsets.only(left: 20.0, top: 20.0),
-          child: Column(children: [
-        Text("upload the Product image ",style: AppWidget.lightTextFeildStyle(),)
-      ])),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "upload the Product image ",
+              style: AppWidget.lightTextFeildStyle(),
+            ),
+            SizedBox(height: 20.0,),
+            Center(
+              child: Container(
+                height: 150,
+                width: 150,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black,width: 1.5),borderRadius: BorderRadius.circular(20)
+
+                ),
+                child: Icon(Icons.camera_alt_outlined),
+              ),
+            ),
+            Text(
+              "Product Name",
+              style: AppWidget.lightTextFeildStyle(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
