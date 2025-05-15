@@ -28,22 +28,100 @@ class _AddProductState extends State<AddProduct> {
     setState(() {});
   }
   uploadItem() async {
-    if(selectedImage!=null && nameController.text!=""){
-      String addId= randomAlphaNumeric(10);
-      Reference firebaseStorageRef = FirebaseStorage.instance.ref().child("blogImage").child(addId);
-      final UploadTask uploadTask = firebaseStorageRef.putFile(selectedImage!);
-      var dowloadUrl= await (await uploadTask).ref.getDownloadURL();
-      Map<String,dynamic> addProduct={
-        "Name":nameController.text,
-        "Image":dowloadUrl,
+    // 1. Validate all required fields
+    if (selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please select an image"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (nameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please enter product name"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (value == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Please select a category"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // 2. Verify the image file exists
+    if (!await selectedImage!.exists()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Selected image file no longer exists"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() => selectedImage = null);
+      return;
+    }
+
+    try {
+      // 3. Show loading state
+      setState(() {});
+
+      // 4. Upload to Firebase Storage
+      String addId = randomAlphaNumeric(10);
+      Reference storageRef = FirebaseStorage.instance
+          .ref()
+          .child("productImages")  // Changed from "blogImage" to "productImages"
+          .child(addId);
+
+      // 5. Start upload task
+      TaskSnapshot uploadTask = await storageRef.putFile(selectedImage!);
+
+      // 6. Get download URL
+      String downloadUrl = await uploadTask.ref.getDownloadURL();
+
+      // 7. Prepare product data
+      Map<String, dynamic> productData = {
+        "Name": nameController.text,
+        "Image": downloadUrl,
+        "Category": value!,
+        "createdAt": DateTime.now().millisecondsSinceEpoch,
       };
-      await DatabaseMethods().addProduct(addProduct, value!).then((value){
-        selectedImage=null;
-        nameController.text="";
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor : Colors.red,
-            content: Text("Product added successfully",style: TextStyle(fontSize: 20.0),)));
+
+      // 8. Save to Firestore
+      await DatabaseMethods().addProduct(productData, value!);
+
+      // 9. Reset form and show success
+      setState(() {
+        selectedImage = null;
+        nameController.clear();
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Product added successfully!"),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+    } catch (e) {
+      // 10. Handle errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Failed to upload: ${e.toString()}"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {});
     }
   }
   String? value;
